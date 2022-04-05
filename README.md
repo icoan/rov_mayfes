@@ -2,3 +2,7 @@
 configを使用する際（Github等にWifi credentialを載せたくない場合）はconfig.h.defaultをconfig.hに名前を変更してください
 
 とりあえずフォークしました。今後はこちらをアップデートします。
+
+# 資料
+###### 公式ドキュメント
+https://docs.blynk.io/en/
