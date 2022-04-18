@@ -1,4 +1,9 @@
 #define BLYNK_PRINT Serial
+#define BLYNK_TEMPLATE_ID "TMPLjvg-o1rH"
+#define BLYNK_DEVICE_NAME "Red"
+#define BLYNK_AUTH_TOKEN "XWgLBdtNfMilZn8TsdO0RgVIAzhL8XUU"
+#define WIFI_SSID "Xperia YHf41b"
+#define WIFI_PASSWORD "f49a25e5a2f7q"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -14,12 +19,12 @@
 //ESP32のPWM: https://www.mgo-tec.com/blog-entry-ledc-pwm-arduino-esp32.html#title02
 
 //トークン発行して入れてください
-char auth[] = BLINK_API_KEY;
+char auth[] = BLYNK_AUTH_TOKEN;
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
 char ssid[] = WIFI_SSID;
-char pass[] =  WIFI_PASSWORD;
+char pass[] = WIFI_PASSWORD;
 
 Servo servo1;
 Servo servo2;
