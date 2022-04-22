@@ -1,9 +1,11 @@
-#define BLYNK_PRINT Serial
 #define BLYNK_TEMPLATE_ID "TMPLjvg-o1rH"
 #define BLYNK_DEVICE_NAME "Red"
 #define BLYNK_AUTH_TOKEN "XWgLBdtNfMilZn8TsdO0RgVIAzhL8XUU"
 #define WIFI_SSID "Xperia YHf41b"
 #define WIFI_PASSWORD "f49a25e5a2f7q"
+#define BLYNK_PRINT Serial
+
+#define SERIAL_PRINT_ON//いらなきゃCOすること
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -23,6 +25,7 @@ Servo servo3;
 
 const int maxUs = 1900;
 const int minUs = 1100;
+
 const int servo1Pin = 19;//表記はGPIO12
 const int servo1Period = 50;
 const int servo2Pin = 18;//表記は13
@@ -87,7 +90,15 @@ void servoLoop()
   servo1.writeMicroseconds(servo1Us);
   servo2.writeMicroseconds(servo2Us);
   servo3.writeMicroseconds(servo3Us);
-}
+
+  #ifdef SERIAL_PRINT_ON
+    Serial.print(servo1Us);
+    Serial.print(", ");
+    Serial.print(servo2Us);
+    Serial.print(", ");
+    Serial.println(servo3Us);
+  #endif
+} 
 
 void setup()
 {
@@ -107,11 +118,15 @@ void setup()
   servo3.setPeriodHertz(servo3Period);
   servo3.attach(servo3Pin, minUs, maxUs);
 
-  delay(3000);
+  Serial.println("Servo Attached");
+
+  delay(1000);
 
   servo1.writeMicroseconds(1500);
   servo2.writeMicroseconds(1500);
   servo3.writeMicroseconds(1500);
+
+  Serial.println("Servo Ready");
 
   delay(3000);
 
@@ -123,6 +138,7 @@ void setup()
 
 void loop()
 {
+  Serial.println("Running Now");
   Blynk.run();
   timer1.run();
   timer2.run();
