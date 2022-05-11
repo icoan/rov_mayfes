@@ -26,17 +26,18 @@ Servo servo3;
 const int maxUs = 1900;
 const int minUs = 1100;
 
-const int servo1Pin = 19;//表記はGPIO12
+const int servo1Pin = 25;//表記はGPIO12
 const int servo1Period = 50;
-const int servo2Pin = 18;//表記は13
+const int servo2Pin = 26;//表記は13
 const int servo2Period = 50;
-const int servo3Pin = 23;//表記は13
+const int servo3Pin = 27;//表記は13
 const int servo3Period = 50;
 
 int servo1Us = 1500;
 int servo2Us = 1500;
 int servo3Us = 1500;
 
+int accelAmount = 1;
 int turnClockAmount = 0;
 int forwardAmount = 0;
 float turnStrength = 0.5;
@@ -44,15 +45,15 @@ float forwardStrength = 0.7;
 
 //アプリ側でVirtual Pinに書き込みがあるたびに呼ばれる関数
 //paramがV6に書き込まれたデータで、asInt()でInt型として処理 asFloatとかも色々ある
-//BLYNK_WRITE(V6)
-//{
-//  int dutycycle = param.asInt();
-//  ledcWrite(led_channel, dutycycle);
-//}
 
 void myTimerEvent()
 {
   Blynk.virtualWrite(V5, millis() / 1000);//起動してからの経過時間
+}
+
+BLYNK_WRITE(V7)
+{
+  accelAmount = param.asDouble();
 }
 
 BLYNK_WRITE(V8)
@@ -69,23 +70,23 @@ BlynkTimer timer1;
 BlynkTimer timer2;
 
 
-int curve1(int input)
+int curve1(int input, double accel)
 {
-  int x = 1500 + round(turnStrength * input);
+  int x = 1500 + round(turnStrength * input * accel);
   return constrain(x, minUs, maxUs);
 }
 
-int curve2(int input)
+int curve2(int input, double accel)
 {
-  int x = 1500 + round(forwardStrength * input);
+  int x = 1500 + round(forwardStrength * input * accel);
   return constrain(x, minUs, maxUs);
 }
 
 void servoLoop()
 {
-  servo1Us = curve1(turnClockAmount);
-  servo2Us = curve1(-turnClockAmount);
-  servo3Us = curve2(forwardAmount);
+  servo1Us = curve1(turnClockAmount, accelAmount);
+  servo2Us = curve1(-turnClockAmount, accelAmount);
+  servo3Us = curve2(forwardAmount, accelAmount);
 
   servo1.writeMicroseconds(servo1Us);
   servo2.writeMicroseconds(servo2Us);
