@@ -1,6 +1,6 @@
 {
     "board": "esp32:esp32:esp32",
     "port": "COM4",
-    "sketch": "rov_mayfes.ino"
+    "sketch": "rov_mayfes.ino",
     "output": "../ArduinoOutput"
 }
