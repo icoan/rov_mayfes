@@ -6,7 +6,7 @@
 #define WIFI_PASSWORD "uvum8745"
 #define BLYNK_PRINT Serial
 
-#define SERIAL_PRINT_ON // いらなきゃCOすること
+// #define SERIAL_PRINT_ON // いらなきゃCOすること
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -43,7 +43,7 @@ float accelCoeff = 1.0f;
 int servoInput1 = 0;
 int servoInput2 = 0;
 int servoInput3 = 0;
-float Strength = 0.7;
+float Strength = 0.5f;
 
 // アプリ側でVirtual Pinに書き込みがあるたびに呼ばれる関数
 // paramがV6に書き込まれたデータで、asInt()でInt型として処理 asFloatとかも色々ある
@@ -79,19 +79,19 @@ BlynkTimer controlLogicTimer;
 // スラスターの回転方向に合わせて＋round～か-round～に書き換え
 int curve1(int input)
 {
-    int x = neutralUs + round(input * accelCoeff);
+    int x = neutralUs - round(input * accelCoeff * Strength); // Whiteなら逆転
     return constrain(x, minUs, maxUs);
 }
 
 int curve2(int input)
 {
-    int x = neutralUs + round(input * accelCoeff);
+    int x = neutralUs + round(input * accelCoeff * Strength);
     return constrain(x, minUs, maxUs);
 }
 
 int curve3(int input)
 {
-    int x = neutralUs + round(input * accelCoeff);
+    int x = neutralUs + round(input * accelCoeff * Strength); // Redなら逆転
     return constrain(x, minUs, maxUs);
 }
 
@@ -137,7 +137,7 @@ void setup()
 
     delay(1000);
 
-    servo1.writeMicroseconds(1600);
+    servo1.writeMicroseconds(1500);
     servo2.writeMicroseconds(1500);
     servo3.writeMicroseconds(1500);
 
